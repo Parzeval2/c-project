@@ -100,9 +100,23 @@ struct ShellCommand ParseCommandLine(char* input)
             }
             else if(strcmp(token, ">>")==0)
             {
-                token = strtok(NULL, " \n");
-                command.output_redirection=token;
-                command.append_out=1;
+                while(isspace((unsigned char)*next)){ //skip spaces
+                    next++;
+                }
+                if(next < end && *next!= '\0') {
+                    token = next;
+                    while(*next &&!isspace((unsigned char)*next)){
+                        next++;
+                    }
+                    if (*next) {
+                        *next++ = '\0';
+                    }
+                    command.output_redirection=strdup(token);
+                    command.append_out=1;
+                }
+                else{
+                    fprintf(stderr, "Error: Expected filename after '>>'\n");
+                }
             }
             else
             {
