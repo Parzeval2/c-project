@@ -5,7 +5,7 @@ TechShell is a lightweight, custom shell implemented in C. It offers basic shell
 
 ## Features
 - Command Execution: Execute standard Unix/Linux commands.
-- I/O Redirection: Supports input (<), output (>), and append (>>) redirection.
+- I/O Redirection: Supports input (`<`), output (`>`), and append (`>>`) redirection.
 - Quoted String Handling: Correctly handles commands with quoted arguments, preserving spaces within quotes.
 - Dynamic Prompt: Displays the current working directory in the prompt.
 - Custom Command Parsing: Robust parsing mechanism to handle various command formats.
@@ -25,12 +25,12 @@ Run the shell from the terminal:
 Enter commands at the prompt as you would in any standard shell. Use exit to terminate the shell.
 
 ## Command Examples
-- List files: **ls -l**
-- Echo a string: **echo "Hello, World!"**
-- Redirect output: **ls -l > files.txt**
-- Append to a file: **echo "New line" >> file.txt**
+- List files: `ls -l`
+- Echo a string: `echo "Hello, World!"`
+- Redirect output: `ls -l > files.txt`
+- Append to a file: `echo "New line" >> file.txt`
 ## Known Issues and Limitations
-- Currently does not support piping (|) between commands.
+- Currently does not support piping (`|`) between commands.
 - Limited to basic error handling.
 
 
