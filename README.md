@@ -39,7 +39,7 @@ Enter commands at the prompt as you would in any standard shell. Use exit to ter
 - The shell displays the current working directory as part of the prompt.
 - The user enters a command.
 - `CommandPrompt()` function captures the input using `getline`, which allows for variable-length input.
-- 
+  
 ## 2. Parsing
 - Input is passed to the `ParseCommandLine()` function.
 - This function uses a custom parser to handle:
@@ -47,7 +47,7 @@ Enter commands at the prompt as you would in any standard shell. Use exit to ter
   - Quoted strings, preserving spaces within quotes.
   - I/O redirection operators (`<`, `>`, `>>`).
 - It separates the command from its arguments and identifies any redirection.
-- 
+  
 ## 3. Execution
 - The `ExecuteCommand()` function handles the execution:
   - It forks a child process using `fork()`.
