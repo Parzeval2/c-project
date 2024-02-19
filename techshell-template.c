@@ -40,10 +40,12 @@ struct ShellCommand {
 char* CommandPrompt(){
     //display working directory
     char cwd[1024];
+    //error for if current working directory cannot be read
    if(getcwd(cwd, sizeof(cwd)) == NULL){
        perror("getcwd");
        return NULL;
    }
+   //print working directory
     printf("%s$ ", cwd);
 
     //return user input
@@ -62,6 +64,7 @@ char* CommandPrompt(){
  */
 struct ShellCommand ParseCommandLine(char* input)
 {
+    //inititalizes the structure and allocates memory
     struct ShellCommand command = {0};
     command.argument_count=0;
     command.arguments=malloc(10 *sizeof(char*));
@@ -73,7 +76,7 @@ struct ShellCommand ParseCommandLine(char* input)
     char *token;
     char *next = input;
     char *end = input + strlen(input);
-
+    //while loop to iterate through the input
     while(next < end){
         while(isspace((unsigned char)*next)){ //skip spaces
             next++;
@@ -96,24 +99,28 @@ struct ShellCommand ParseCommandLine(char* input)
             *next++ = '\0';
         }
 
-
+        //special token cases
         if(token < next){
+            //takes input redirection
             if(strcmp(token, "<")==0)
             {
                 token = strtok(NULL, " \n");
                 command.input_redirection=token;
             }
+            //takes output redirection
             else if(strcmp(token, ">")==0)
             {
                 token = strtok(NULL, " \n");
                 command.output_redirection=token;
                 command.append_out=0;
             }
+            //takes output redirection
             else if(strcmp(token, ">>")==0)
             {
                 while(isspace((unsigned char)*next)){ //skip spaces
                     next++;
                 }
+                //ensures that it outputes to the full name of the file
                 if(next < end && *next!= '\0') {
                     token = next;
                     while(*next &&!isspace((unsigned char)*next)){
@@ -131,12 +138,14 @@ struct ShellCommand ParseCommandLine(char* input)
             }
             else
             {
+                //add token to arguments array
                 command.arguments[command.argument_count++]=strdup(token);
             }
         }
     }
         if(command.argument_count>0)
         {
+            //set command to first argument
             command.command=command.arguments[0];
         }
 
@@ -150,12 +159,15 @@ struct ShellCommand ParseCommandLine(char* input)
  */
 void SetupRedirect(struct ShellCommand *command) {
     if (command->input_redirection) {
+        //open input redirection
         freopen(command->input_redirection, "r", stdin);
     }
     if (command->output_redirection) {
         if (command->append_out) {
+            //open append output redirection
             freopen(command->output_redirection, "a", stdout);
         } else {
+            //open overwrite output redirection
             freopen(command->output_redirection, "w", stdout);
         }
     }
@@ -178,18 +190,24 @@ void ExecuteCommand(struct ShellCommand command) {
         }
         return; //no forking
     }
+    //if command is not 'cd'
+    //fork a child process
     pid_t pid = fork();
     if (pid == 0) {
         SetupRedirect(&command);
         char* arguments[command.argument_count + 1];
+        //build array of arguments
         for (int i = 0; i < command.argument_count; i++) {
             arguments[i] = command.arguments[i];
         }
+        //set arguments[command.argument_count] to NULL
         arguments[command.argument_count] = NULL;
+        //execute command
         execvp(command.command, arguments);
         exit(EXIT_SUCCESS);
     }
     else if (pid > 0) {
+        //wait for child
         int status;
         waitpid(pid, &status, 0);
     }
@@ -206,7 +224,7 @@ int main() {
     for (;;)
     {
         input = CommandPrompt();
-        // parse the shellCommand line
+        // parse the shellCommand line and check for exit code
         if (strcmp(input, "exit") == 0) {
             break;
         }
