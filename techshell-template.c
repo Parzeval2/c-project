@@ -52,6 +52,9 @@ char* CommandPrompt(){
     char *prompt = NULL;
     size_t prompt_size = 0;
     getline(&prompt, &prompt_size, stdin);
+    if(strcmp(prompt, "\n" ) == 0){
+        return NULL;
+    }
     return prompt;
 
 } // Display current working directory and return user input
@@ -102,17 +105,45 @@ struct ShellCommand ParseCommandLine(char* input)
         //special token cases
         if(token < next){
             //takes input redirection
-            if(strcmp(token, "<")==0)
-            {
-                token = strtok(NULL, " \n");
-                command.input_redirection=token;
+            if(strcmp(token, "<")==0) {
+                while (isspace((unsigned char) *next)) { //skip spaces
+                    next++;
+                }
+                if (next != '\0') {
+                    token = next;
+                    while (*next && !isspace((unsigned char) *next)) {
+                        next++;
+                    }
+                    if (*next) {
+                        *next++ = '\0';
+                    }
+                    command.input_redirection = token;
+                }
+                else{
+                    fprintf(stderr, "Invalid input redirection\n");
+                }
             }
             //takes output redirection
             else if(strcmp(token, ">")==0)
             {
-                token = strtok(NULL, " \n");
-                command.output_redirection=token;
-                command.append_out=0;
+                while(isspace((unsigned char)*next)){ //skip spaces
+                    next++;
+                }
+                if (next != '\0'){
+                    token = next;
+                    while(*next &&!isspace((unsigned char)*next)){
+                        next++;
+                    }
+                    if (*next) {
+                        *next++ = '\0';
+                    }
+                    command.output_redirection=token;
+                    command.append_out=0;
+                }
+                else{
+                    perror("Invalid output redirection");
+                }
+
             }
             //takes output redirection
             else if(strcmp(token, ">>")==0)
@@ -121,7 +152,7 @@ struct ShellCommand ParseCommandLine(char* input)
                     next++;
                 }
                 //ensures that it outputes to the full name of the file
-                if(next < end && *next!= '\0') {
+                if(next != '\0') {
                     token = next;
                     while(*next &&!isspace((unsigned char)*next)){
                         next++;
@@ -160,15 +191,21 @@ struct ShellCommand ParseCommandLine(char* input)
 void SetupRedirect(struct ShellCommand *command) {
     if (command->input_redirection) {
         //open input redirection
-        freopen(command->input_redirection, "r", stdin);
+        if(freopen(command->input_redirection, "r", stdin) == NULL){
+            perror("Failed to open input redirection");
+        }
     }
     if (command->output_redirection) {
         if (command->append_out) {
             //open append output redirection
-            freopen(command->output_redirection, "a", stdout);
+            if(freopen(command->output_redirection, "a", stdout) == NULL){
+                perror("Failed to redirect output");
+            }
         } else {
             //open overwrite output redirection
-            freopen(command->output_redirection, "w", stdout);
+            if(freopen(command->output_redirection, "w", stdout) ==NULL) {
+                perror("Failed to redirect output");
+            }
         }
     }
 }
@@ -224,6 +261,10 @@ int main() {
     for (;;)
     {
         input = CommandPrompt();
+
+        if (input == NULL) {
+            continue;
+        }
         // parse the shellCommand line and check for exit code
         if (strcmp(input, "exit") == 0) {
             break;
