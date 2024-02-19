@@ -33,7 +33,7 @@ char* CommandPrompt(){
        perror("getcwd");
        return NULL;
    }
-    printf("%s: $", cwd);
+    printf("%s$ ", cwd);
 
     //return user input
     char *prompt = NULL;
@@ -146,6 +146,18 @@ void SetupRedirect(struct ShellCommand *command){
     }
 }
 void ExecuteCommand(struct ShellCommand command){
+    // Check if the command is 'cd'
+    if (strcmp(command.command, "cd") == 0) {
+        if (command.argument_count > 1) {
+            // Change directory
+            if (chdir(command.arguments[1]) != 0) {
+                perror("chdir"); // Print error if chdir fails
+            }
+        } else {
+            fprintf(stderr, "Usage: cd <directory>\n");
+        }
+        return; //no forking
+    }
     pid_t pid = fork();
     if (pid == 0) {
         SetupRedirect(&command);
