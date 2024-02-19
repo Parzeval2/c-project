@@ -1,0 +1,43 @@
+Script started on 2024-02-19 18:22:44+00:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="80" LINES="24"]
+[?2004h]0;ubuntu@ubuntu: ~/Desktop/c-project[01;32mubuntu@ubuntu[00m:[01;34m~/Desktop/c-project[00m$ cd ..[K[K[K[K[K/[K./
+.git/               techshell           
+.idea/              techshell-template  
+]0;ubuntu@ubuntu: ~/Desktop/c-project[01;32mubuntu@ubuntu[00m:[01;34m~/Desktop/c-project[00m$ ./techshell
+[?2004l/home/ubuntu/Desktop/c-project$ cd ..
+/home/ubuntu/Desktop$ pwd
+/home/ubuntu/Desktop
+/home/ubuntu/Desktop$ ls    cd c-project
+/home/ubuntu/Desktop/c-project$ ls -lg h techshell-template.c
+-rw------- 1 ubuntu ubuntu 8.1K Feb 19 18:22 techshell-template.c
+/home/ubuntu/Desktop/c-project$ ls /root
+ls: cannot open directory '/root': Permission denied
+/home/ubuntu/Desktop/c-project$ horseface
+/home/ubuntu/Desktop/c-project$ cd /root
+chdir: Permission denied
+/home/ubuntu/Desktop/c-project$ ps
+    PID TTY          TIME CMD
+  21777 pts/3    00:00:00 bash
+  21810 pts/3    00:00:00 techshell
+  21850 pts/3    00:00:00 ps
+/home/ubuntu/Desktop/c-project$ whereis ps
+ps: /usr/bin/ps /usr/share/man/man1/ps.1.gz
+/home/ubuntu/Desktop/c-project$ ls
+README.md  techshell  techshell-template  techshell-template.c	typescript
+/home/ubuntu/Desktop/c-project$ ps u > ps.o out
+/home/ubuntu/Desktop/c-project$ wc -l < ps.out
+13
+/home/ubuntu/Desktop/c-project$ wc -l < ps.out > wc.out
+/home/ubuntu/Desktop/c-project$ cat wc.out
+13
+/home/ubuntu/Desktop/c-project$ ls
+README.md  techshell	       techshell-template.c  wc.out
+ps.out	   techshell-template  typescript
+/home/ubuntu/Desktop/c-project$ rm ps.out wc.out
+/home/ubuntu/Desktop/c-project$ ls
+README.md  techshell  techshell-template  techshell-template.c	typescript
+/home/ubuntu/Desktop/c-project$ exit
+/home/ubuntu/Desktop/c-project$ ^C
+[?2004h]0;ubuntu@ubuntu: ~/Desktop/c-project[01;32mubuntu@ubuntu[00m:[01;34m~/Desktop/c-project[00m$ exit
+[?2004lexit
+
+Script done on 2024-02-19 18:25:30+00:00 [COMMAND_EXIT_CODE="130"]
