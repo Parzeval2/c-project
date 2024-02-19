@@ -13,7 +13,7 @@ TechShell is a lightweight, custom shell implemented in C. It offers basic shell
 ## Installation
 Clone the repository and compile the source code using GCC:
 ````
-git clone [repository-link]
+git clone [(https://github.com/Parzeval2/c-project)]
 cd techshell
 gcc -o techshell techshell.c
 ````
