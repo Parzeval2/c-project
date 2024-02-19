@@ -55,6 +55,9 @@ char* CommandPrompt(){
     if(strcmp(prompt, "\n" ) == 0){
         return NULL;
     }
+    if(strcmp(prompt, "exit\n") == 0){
+        exit(0);
+    }
     return prompt;
 
 } // Display current working directory and return user input
@@ -109,7 +112,7 @@ struct ShellCommand ParseCommandLine(char* input)
                 while (isspace((unsigned char) *next)) { //skip spaces
                     next++;
                 }
-                if (next != '\0') {
+                if (next != NULL) {
                     token = next;
                     while (*next && !isspace((unsigned char) *next)) {
                         next++;
@@ -129,7 +132,7 @@ struct ShellCommand ParseCommandLine(char* input)
                 while(isspace((unsigned char)*next)){ //skip spaces
                     next++;
                 }
-                if (next != '\0'){
+                if (next != NULL){
                     token = next;
                     while(*next &&!isspace((unsigned char)*next)){
                         next++;
@@ -152,7 +155,7 @@ struct ShellCommand ParseCommandLine(char* input)
                     next++;
                 }
                 //ensures that it outputes to the full name of the file
-                if(next != '\0') {
+                if(next != NULL) {
                     token = next;
                     while(*next &&!isspace((unsigned char)*next)){
                         next++;
@@ -265,10 +268,7 @@ int main() {
         if (input == NULL) {
             continue;
         }
-        // parse the shellCommand line and check for exit code
-        if (strcmp(input, "exit") == 0) {
-            break;
-        }
+        // parse the shellCommand line
         shell_command = ParseCommandLine(input);
         // execute the shellCommand
         ExecuteCommand(shell_command);
