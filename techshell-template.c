@@ -1,7 +1,7 @@
 /*
-* Name(s): 
-* Date: 
-* Description: **Include what you were and were not able to handle!**
+* Name(s): Grant Cooper
+* Date: 2/19/2023
+* Description: Lightweight Shell Copy. From current Testing it appears to be able to mimic everything but autocomplete in the terminal
 *
 *
 */
@@ -13,7 +13,18 @@
 #include <string.h>
 #include <ctype.h>
 
-struct ShellCommand{
+/**
+ * @brief Struct that holds information about a shell command
+ *
+ * The struct contains the following fields:
+ * command: The command name
+ * argument_count: The number of arguments in the arguments array
+ * arguments: An array of pointers to the arguments
+ * input_redirection: The input redirection filename, or NULL if no redirection is specified
+ * output_redirection: The output redirection filename, or NULL if no redirection is specified
+ * append_out: A flag indicating whether the output should be appended to (1) or overwritten (0)
+ */
+struct ShellCommand {
     char *command;
     int argument_count;
     char **arguments;
@@ -132,20 +143,29 @@ struct ShellCommand ParseCommandLine(char* input)
     return command;
 }
 
-void SetupRedirect(struct ShellCommand *command){
-    if(command->input_redirection){
+/**
+ * @brief Set up input and output redirection for a shell command
+ *
+ * @param command pointer to the shell command structure
+ */
+void SetupRedirect(struct ShellCommand *command) {
+    if (command->input_redirection) {
         freopen(command->input_redirection, "r", stdin);
     }
-    if(command->output_redirection){
-        if(command->append_out){
+    if (command->output_redirection) {
+        if (command->append_out) {
             freopen(command->output_redirection, "a", stdout);
-        }
-        else{
+        } else {
             freopen(command->output_redirection, "w", stdout);
         }
     }
 }
-void ExecuteCommand(struct ShellCommand command){
+/**
+ * @brief Set up input and output redirection for a shell command
+ *
+ * @param command pointer to the shell command structure
+ */
+void ExecuteCommand(struct ShellCommand command) {
     // Check if the command is 'cd'
     if (strcmp(command.command, "cd") == 0) {
         if (command.argument_count > 1) {
