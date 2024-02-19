@@ -34,7 +34,7 @@ Enter commands at the prompt as you would in any standard shell. Use exit to ter
 - Limited to basic error handling.
 
 
-#Explanation
+# Explanation
 ## 1. Prompt
 - The shell displays the current working directory as part of the prompt.
 - The user enters a command.
